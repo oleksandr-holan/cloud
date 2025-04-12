@@ -1,6 +1,7 @@
+from typing import List, Optional
+from uuid import UUID, uuid4
+
 from pydantic import BaseModel
-from typing import Optional, List
-from uuid import uuid4, UUID
 
 
 class Item(BaseModel):
@@ -10,7 +11,7 @@ class Item(BaseModel):
     price: float
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "name": "Sample Item",
                 "description": "This is a sample item",
