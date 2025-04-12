@@ -94,6 +94,11 @@ heroku ps:scale web=1
 heroku open
 ```
 
+```bash
+# Destroy the app after you finish
+heroku apps:destroy --app your-app-name --confirm your-app-name
+```
+
 ## Testing the API
 
 Once deployed, you can access the interactive API documentation:
