@@ -25,7 +25,7 @@ class Item(ItemBase):
     created_at: datetime
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # CRUD operations
 @app.post("/items/", response_model=Item, status_code=status.HTTP_201_CREATED)
