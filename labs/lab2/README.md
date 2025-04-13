@@ -85,7 +85,7 @@ git add .
 git commit -m "Initial commit"
 
 # Deploy to Heroku
-git push heroku main
+git push heroku master
 
 # Scale the app
 heroku ps:scale web=1
