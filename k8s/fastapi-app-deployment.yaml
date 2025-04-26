@@ -17,7 +17,7 @@ spec:
           image: fastapi-app:latest
           imagePullPolicy: Never
           ports:
-            - containerPort: 8000
+            - containerPort: 8080
           env:
             - name: POSTGRES_USER
               valueFrom:
