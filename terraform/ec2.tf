@@ -47,17 +47,26 @@ data "aws_ami" "amazon_linux_2023" {
 }
 
 # Create a Security Group to allow SSH ingress and all egress
-resource "aws_security_group" "allow_ssh" {
-  name        = "lab6-allow-ssh-sg"
-  description = "Allow SSH inbound traffic and all outbound traffic"
+resource "aws_security_group" "allow_rules" {
+  name        = "lab6-allow-ssh-http-sg"
+  description = "Allow SSH and HTTP inbound traffic and all outbound traffic"
 
   # Ingress rule for SSH (Port 22)
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.ssh_location] # Use the variable for source IP range
+    cidr_blocks = [var.ssh_location]
     description = "Allow SSH access"
+  }
+
+  # Ingress rule for HTTP (Port 80)
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow HTTP access from anywhere"
   }
 
   # Egress rule to allow all outbound traffic (common default)
@@ -70,7 +79,7 @@ resource "aws_security_group" "allow_ssh" {
   }
 
   tags = merge(var.common_tags, {
-    Name = "lab6-allow-ssh-sg"
+    Name = "lab6-allow-ssh-http-sg" # Update tag to match resource name
   })
 }
 
