@@ -16,7 +16,7 @@ locals {
 set -Eeuo pipefail
 
 # Install necessary tools
-dnf install -y jq git libicu
+dnf install -y jq git libicu docker
 
 # Create a dedicated user for the GitHub runner
 useradd -m github-runner
@@ -35,13 +35,20 @@ tar xzf ./actions-runner-linux-x64-2.323.0.tar.gz
 # Set ownership
 chown -R  github-runner:github-runner /home/github-runner/actions-runner
 
-
 REG_TOKEN=$(curl -sX POST -H "Authorization: Bearer ${var.github_token}" https://api.${local.github.host}/repos/${local.github.owner}/${local.github.repo}/actions/runners/registration-token | jq .token --raw-output)
 sudo -u github-runner ./config.sh \
   --unattended \
   --url "${var.github_repo}" \
   --token "$REG_TOKEN" \
-sudo ./svc.sh install github-runner
-sudo ./svc.sh start
+./svc.sh install github-runner
+./svc.sh start
+
+# Start the Docker service
+systemctl start docker
+systemctl enable docker
+
+# Add the ec2-user and github-runner users to the docker group to run Docker commands without using sudo.
+sudo usermod -a -G docker ec2-user
+sudo usermod -a -G docker github-runner
 EOT
 }
