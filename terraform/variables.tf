@@ -16,13 +16,6 @@ variable "key_name_prefix" {
   default     = "lab6-deployer-key"
 }
 
-variable "public_key_path" {
-  description = "Path to the public SSH key file to be uploaded to AWS."
-  type        = string
-  # IMPORTANT: Update this path if your key is located elsewhere or named differently
-  default = "~/.ssh/id_rsa_lab6.pub"
-}
-
 variable "common_tags" {
   description = "Common tags to apply to all resources."
   type        = map(string)
@@ -44,4 +37,15 @@ variable "private_key_filename" {
   description = "Filename for the generated private key to be saved locally."
   type        = string
   default     = "generated-key.pem" # Will be saved in the same directory as the Terraform files
+}
+
+variable "github_token" {
+  description = "GitHub Personal Access Token with repo permissions."
+  type        = string
+  sensitive   = true
+}
+
+variable "github_repo" {
+  description = "GitHub Repository URL with CI/CD Workflows."
+  type        = string
 }
