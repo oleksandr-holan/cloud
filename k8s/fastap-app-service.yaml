@@ -9,7 +9,4 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8080
-  # Робить сервіс доступним на IP-адресі вузла та статичному порту (NodePort)
   type: ClusterIP
-  # Для хмарних провайдерів можна використовувати LoadBalancer
-  # type: LoadBalancer
