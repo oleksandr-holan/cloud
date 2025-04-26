@@ -1,0 +1,40 @@
+services:
+  fastapi-app:
+    build: .
+    container_name: fastapi_app_container
+    ports:
+      - "80:8080"
+    environment:
+      POSTGRES_USER: cloud_user
+      POSTGRES_PASSWORD: strongpassword123
+      POSTGRES_DB: cloud_db
+      DATABASE_URL: "postgresql://cloud_user:strongpassword123@postgres:5432/cloud_db"
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15
+    container_name: postgres_db_container
+    environment:
+      POSTGRES_USER: cloud_user
+      POSTGRES_PASSWORD: strongpassword123
+      POSTGRES_DB: cloud_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      # Optional: Expose PostgreSQL port to the host for debugging/direct access
+      # If you don't need direct access from your host machine, remove this.
+      - "5432:5432"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
