@@ -81,6 +81,10 @@ resource "aws_security_group" "allow_rules" {
   tags = merge(var.common_tags, {
     Name = "lab6-allow-ssh-http-sg" # Update tag to match resource name
   })
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # Create the EC2 Instance
@@ -93,7 +97,7 @@ resource "aws_instance" "lab_instance" {
 
   # Associate the Security Group created earlier
   # Needs to be a list of security group IDs
-  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+  vpc_security_group_ids = [aws_security_group.allow_rules.id]
 
   # Apply common tags and a specific Name tag
   tags = merge(var.common_tags, {
@@ -101,20 +105,4 @@ resource "aws_instance" "lab_instance" {
   })
 
   user_data = local.user_data
-
-  provisioner "remote-exec" {
-    when = destroy
-
-    connection {
-      type        = "ssh"
-      user        = "ec2-user"
-      private_key = tls_private_key.generated_ssh_key.private_key_pem
-      host        = self.public_ip
-    }
-
-    inline = [
-      "cd /home/github-runner/actions-runner",
-      "sudo -u github-runner ./config.sh remove --token $(curl -s -X POST -H \"Authorization: Bearer ${var.github_token}\" https://api.github.com/repos/${local.github.owner}/${local.github.repo}/actions/runners/remove-token | jq -r .token)"
-    ]
-  }
 }

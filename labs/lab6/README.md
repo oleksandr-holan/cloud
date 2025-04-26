@@ -151,6 +151,11 @@ The Terraform configuration files (`.tf` files) define the infrastructure. These
 
     * Replace placeholders with your key path, default user, and public IP.
 
+    If you are using ssh-agent and have a lot of entries, use this command
+    ```sh
+    ssh -i path/to/your/private-key.pem -o IdentityAgent=none <default-user>@<public-ip-address>
+    ``
+
 ## 6. Cleaning Up Resources
 
 **Crucially, destroy the AWS resources when finished.**
