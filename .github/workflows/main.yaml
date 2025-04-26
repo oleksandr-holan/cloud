@@ -1,0 +1,29 @@
+name: Deploy Docker Compose
+
+# To cancel concurrent builds on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+  deploy:
+    needs: build
+    runs-on: [self-hosted]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Deploy with Docker Compose
+        run: |
+          docker compose up -d --wait
