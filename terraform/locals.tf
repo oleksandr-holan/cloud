@@ -13,6 +13,8 @@ locals {
 locals {
   user_data = <<-EOT
 #!/bin/bash
+set -Eeuo pipefail
+
 # Install necessary tools
 dnf install -y jq git libicu
 
