@@ -15,6 +15,8 @@ locals {
 #!/bin/bash
 set -Eeuo pipefail
 
+sudo dnf update
+
 # Install necessary tools
 dnf install -y jq git libicu docker
 
@@ -50,5 +52,15 @@ systemctl enable docker
 # Add the ec2-user and github-runner users to the docker group to run Docker commands without using sudo.
 sudo usermod -a -G docker ec2-user
 sudo usermod -a -G docker github-runner
+
+# Create the directory for Docker CLI plugins
+sudo mkdir -p /usr/local/lib/docker/cli-plugins
+
+# Download the latest Docker Compose plugin for your architecture
+sudo curl -sL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-$(uname -m) -o /usr/local/lib/docker/cli-plugins/docker-compose
+
+# Set ownership and permissions
+sudo chown root:root /usr/local/lib/docker/cli-plugins/docker-compose
+sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 EOT
 }
