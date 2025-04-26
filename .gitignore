@@ -7,6 +7,9 @@
 *.tfstate
 *.tfstate.*
 
+# tfvars with secrets
+*secrets*.tfvars
+
 # Crash log files
 crash.log
 crash.*.log
