@@ -13,8 +13,21 @@ locals {
 locals {
   user_data = <<-EOT
 #!/bin/bash
-# Install necessary tools
-dnf install -y jq git libicu
+set -Eeuo pipefail
+
+dnf update -y
+dnf install -y jq git libicu postgresql postgresql-server postgresql-contrib
+
+# --- PostgreSQL Setup ---
+
+# This is the standard command on RHEL-based systems like AL2023
+# It creates the default data directory and configuration files.
+/usr/bin/postgresql-setup --initdb
+
+systemctl enable postgresql.service
+systemctl start postgresql.service
+
+# --- GitHub Runner Setup ---
 
 # Create a dedicated user for the GitHub runner
 useradd -m github-runner
