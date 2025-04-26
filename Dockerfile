@@ -10,6 +10,6 @@ RUN uv sync --frozen --no-install-project
 
 COPY ./app /app/app
 
-EXPOSE 8000
+EXPOSE 8080
 
 CMD ["/app/.venv/bin/fastapi", "run", "app/main.py", "--port", "8080", "--host", "0.0.0.0"]
