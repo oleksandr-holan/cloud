@@ -172,5 +172,3 @@ The Terraform configuration files (`.tf` files) define the infrastructure. These
     * **SSO Login Prompt:** You might be prompted to log in via the browser again if your session expired.
     * **Terraform Confirmation:** Type `yes` and press Enter to confirm deletion.
 3. **Verify Deletion:** Check the AWS Management Console (EC2 section) to ensure resources are terminated/deleted.
-
-You have now successfully set up AWS with IAM Identity Center (SSO), configured your local environment, provisioned an EC2 instance using Terraform with SSO authentication, connected to it, and destroyed the resources.
